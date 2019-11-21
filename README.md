@@ -1,2 +1,2 @@
-# points1
-点位图
+# points
+ Echarts MarkerClusterer

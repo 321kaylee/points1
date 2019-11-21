@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html,
+        #allmap {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+        /*隐藏百度logo*/
+        .anchorBL {
+            display: none!important;
+        }
+        /* p{margin-left:5px; font-size:14px;} */
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=ZLVsvotOlaTjCy4ri55s6vBW15olFFLh"></script></script>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+    <link rel="stylesheet"
+            href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+    <!--<script type="text/javascript"-->
+            <!--src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>-->
+    <!--改良可显示label的js   -->
+    <script src=MarkerClusterer_min.js></script>
+    <title>民国清流点位图</title>
+</head>
+<body>
+<div id="allmap"></div>
+<!-- <p>点击标注点，可查看由纯文本构成的简单型信息窗口</p> -->
+</body>
+        <script type="text/javascript">
+             var markerArr = [ {
+                title : "林语堂漳州故居",
+                point : "117.273396,24.291233",
+                address : "福建省漳州市平和县坂仔绿城大桥",
+                description : "林语堂的父亲林至诚24岁传教所建的基督教堂旧址。后教堂与故居在1974年被彻底拆除，现有的故居是依照当年原址修建而成的。",
+                tel : "10086",
+                img:"img/林语堂漳州故居.jpg",
+                site:'http://www.whlyw.net/'
+            }, {
+                title : "林语堂文化博览园",
+                point : "117.608334,24.56518",
+                address : "福建省漳州市芗城区林语堂纪念馆",
+                description : "",
+                tel : "10086",
+                img:"img/林语堂.jpg",
+                site:'http://www.whlyw.net/'
+            }, {
+                title : "冰心故居",
+                point : "119.302337,26.091748",
+                address : "福州市鼓楼区杨桥东路17号",
+                description : "",
+                tel : "10086",
+                img:"img/冰心.jpg",
+                site:'http://www.whlyw.net/'
+            }, {
+                title :"福建省冰心文学馆",
+                point : "119.51617,25.970936",
+                address : "福建省福州市长乐区爱心路198号爱心公园内",
+                description : "",
+                tel : "10086",
+                img:"img/冰心.jpg",
+                site:'http://www.whlyw.net/'
+            }, {
+                title : "林语堂厦门故居",
+                point : "118.079043,24.449868",
+                address : "厦门市思明区福建路44号",
+                description : "林语堂厦门故居位于鼓浪屿岛上，是一座U形的别墅，是鼓浪屿最古老的别墅之一，约建于十九世纪五十年代，距今已有150多年了。（现未对外开放）",
+                tel : "10086",
+                img:"img/林语堂.jpg",
+                site:'http://www.whlyw.net/'
+            }, {
+                title : "林纾故居",
+                point : "119.324941,26.080633",
+                address : "福建省福州市六一中路40号莲宅村内",
+                description : "林纾故居纪念馆陈列着林纾与妻儿照片、书橱、衣橱、林纾生前用过的笔筒墨盒、床和衣架。",
+                tel : "10086",
+                img:"img/林纾.jpg",
+                site:'http://www.whlyw.net/'
+            }, //福建地区
+			 //台湾地区
+            {
+                title : "林语堂台北故居",
+                point : "121.55724,25.112996",
+                address : "台湾台北市士林区仰德大道二段141号",
+                description : "台北林语堂故居兴建于1966年，由林语堂亲自设计，是林语堂生前最后十年定居台湾的住所。",
+                tel : "10086",
+                img:"img/林语堂漳州故居.jpg",
+                site:'http://www.whlyw.net/'
+            },
+                {
+                title : "胡适纪念馆",
+                point : "121.626528,25.043173",
+                address : "台湾台北市南港区研究院路二段130号 ",
+                description : "胡适纪念馆由故居、陈列室和墓园三部分组成。",
+                img:"img/胡适.jpg",
+                site:'http://www.whlyw.net/'
+            },{
+                    title : "傅斯年墓地",
+                    point : "121.626925,25.042958",
+                    address : "史语所傅斯年图书馆为中央研究院史语所图书馆，位于台湾台北市南港中研研究院，因纪念傅斯年而得名",
+                    description : "",
+                    img:"img/傅斯年.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "梁实秋故居",
+                    point : "121.538242,25.027006",
+                    address : "台湾省台北市大安区云和街11号",
+                    description : "",
+                    img:"img/梁实秋.jpg",
+                    site:'http://www.whlyw.net/'
+                },//北京地区
+				{
+                    title : "陈独秀旧居",
+                    point : "116.410434,39.923652",
+                    address : "北京市东城区北池子大街箭杆胡同20号",
+                    description : "1917年陈独秀由上海赴北京大学任教时就居住在这里，《新青年》编辑部也随之迁于此。",
+                    img:"img/陈独秀旧居.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "蔡元培故居",
+                    point : "116.42511,39.92051",
+                    address : "北京市东城区东堂子胡同75号 ",
+                    description : "1917～1920年蔡元培在此居住。",
+                    img:"img/蔡元培北京故居.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "刘半农墓地",
+                    point : "116.200656,40.004744",
+                    address : "北京市海淀区公主坟8号 ",
+                    description : "",
+                    img:"img/刘半农墓地.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "鲁迅故居",
+                    point : "116.365327,39.93152",
+                    address : "北京市西城区阜成门内宫门口二条19号 ",
+                    description : "鲁迅1924至1926年在北京的住所，是鲁迅1924年春自己设计改建的，同年5月搬来居住，一直到1926年8月，他离开北京，去到南方。1929年5月和1932年11月，鲁迅两次从上海回北京看望母亲，也是住在这里。",
+                    img:"img/鲁迅北京故居.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "周作人故居",
+                    point : "116.377387,39.94436",
+                    address : "北京市西城区八道湾胡同11号",
+                    description : "北京西城区西直门内大街，赵登禹路北口八道湾胡同，位于此地的鲁迅与周作人故居——八道湾胡同11号院",
+                    img:"img/周作人.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "梁启超故居",
+                    point : "116.430263,39.943817",
+                    address : "北京市东城区北沟沿胡同23 ",
+                    description : "",
+                    img:"img/梁启超.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "郭沫若故居",
+                    point : "116.395821,39.941029",
+                    address : "北京市西城区前海西街18号 ",
+                    description : "原是清代和珅的一座花园，1963年10月，郭沫若始居于此，直至1978年6月12日逝世，郭沫若先生在这里度过了他一生中的最后15年。",
+                    img:"img/郭沫若北京故居.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "李大钊故居",
+                    point : "116.372449,39.910656",
+                    address : "北京市西城区文华胡同24号 ",
+                    description : "从1916年夏至1927年春，李大钊在北京工作、生活十年，1920年春至1924年1 月，李大钊一家在石驸马大街后宅35号(今西城区文华胡同24号)北院居住将近四年，这是他在故乡之外与家人生活时间最长的一处居所。1979年8月21 日，李大钊故居被公布为北京市重点文物保护单位。",
+                    img:"img/李大钊北京故居.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "毛主席纪念堂",
+                    point : "116.404162,39.908892",
+                    address : "北京市前门东大街11号 ",
+                    description : "毛主席纪念堂是为纪念开国领袖毛泽东而建造的，位于天安门广场， 人民英雄纪念碑南面，坐落在原中华门旧址。",
+                    img:"img/毛主席纪念堂.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "茅盾故居",
+                    point : "116.410792,39.945061",
+                    address : "北京市东城区后圆恩寺胡同13号 ",
+                    description : "茅盾于1974年12月搬入此院，直到1981年辞世。茅盾逝世后，故居辟为陈列馆对公众开放。",
+                    img:"img/矛盾北京故居.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "李大钊烈士陵园",
+                    point : "116.238159,39.9868",
+                    address : "北京市海淀区万安里1号 ",
+                    description : "李大钊的汉白玉全身雕像，雕像后是烈士及其夫人赵纫兰同志墓，墓后为纪念碑，由邓小平同志题写。",
+                    img:"img/李大钊.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "北京香山万安公墓",
+                    point : "116.237505,39.987318",
+                    address : "北京市海淀区旱河路万安里1号 ",
+                    description : "万安公墓埋葬着许多历史名人，如李大钊、戴望舒、朱自清、何思源、曹禺、冯友兰、陈白尘、施今墨、容国团、淘金、段祺瑞、韩复榘、罗章龙、高岗、孙敬修、郭林、王治昌、萧军、翁文灏、沈醉、郭超人、启功，语言学家王力等",
+                    img:"img/.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "沈从文故居",
+                    point : "116.427801,39.920314",
+                    address : "北京市东城区东堂子胡同51号 ",
+                    description : "沈从文故居，著名文学家、文物研究专家沈从文在这个院子里住了近三十年。",
+                    img:"img/沈从文.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "丁玲故居",
+                    point : "116.390946,39.944876",
+                    address : "后海大翔凤胡同3号院",
+                    description : "这里是丁玲晚年居住的地方，现在是《民族文学》杂志社。",
+                    img:"img/丁玲.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//上海
+				{
+                    title : "胡适故居",
+                    point : "121.444707,31.231909",
+                    address : "上海市静安区万航渡路",
+                    description : "",
+                    img:"img/胡适.jpg",
+                    site:'https://321kaylee.github.io/life-track/'
+                },{
+                    title : "鲁迅纪念馆",
+                    point : "121.490442,31.275505",
+                    address : "甜爱路200号 ",
+                    description : "上海鲁迅纪念馆是新中国建立后第一个人物性纪念馆，也是新中国成立后第一个名人纪念馆，同时管理鲁迅墓文物保护单位",
+                    img:"img/上海鲁迅纪念馆.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "徐志摩旧居",
+                    point : "121.490442,31.275505",
+                    address : "上海静安区延安中路913弄",
+                    description : "",
+                    img:"img/徐志摩旧居.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "章士钊旧居",
+                    point : "121.466793,31.230421",
+                    address : "延安中路720弄7号 ",
+                    description : "",
+                    img:"img/章士钊.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "巴金故居",
+                    point : "121.447147,31.215026",
+                    address : "上海市徐汇区武康路113号 ",
+                    description : "巴金先生在上海的住宅，是千万读者心目中的文学圣地。1955年9月，巴金迁居武康路寓所。这是他在上海定居住得最长久的地方。",
+                    img:"img/巴金.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "张爱玲故居",
+                    point : "121.454082,31.231089",
+                    address : "常德路195号 ",
+                    description : "这公寓是张爱玲和她姑姑张茂渊住在一起，两人各居一室，有自己的卧室和盥洗室，中间有厨房相连，要见面开门即可。当时，这里是张爱玲在上海的最后居所。",
+                    img:"img/张爱玲.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				{
+                    title : "蔡元培故居",
+                    point : "121.454117,31.225164",
+                    address : "静安区华山路303弄16号",
+                    description : "现一楼辟为故居陈列馆，二楼、三楼居住着蔡元培先生的子女，故居的陈设基本保持蔡元培先生生前的原样。",
+                    img:"img/蔡元培.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "沈尹默故居",
+                    point : "121.493991,31.264282",
+                    address : "上海市虹口区海伦路504号(近四平路) ",
+                    description : "沈尹默故居，是沈老人生中最后25年的居住地。",
+                    img:"img/沈尹默故居.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//浙江
+				{
+                    title : "蔡元培故居",
+                    point : "120.589806,30.013167",
+                    address : "绍兴市越城区萧山街笔飞弄13号",
+                    description : "中国目前唯一专门介绍蔡元培一生事迹的名人纪念馆",
+                    img:"img/蔡元培故居.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "鲁迅故居",
+                    point : "120.592275,29.998184",
+                    address : "绍兴市越城区鲁迅中路241号",
+                    description : "1881年9月25日鲁迅就出生在这里，一直生活到18岁去外地读书，以后回故乡任教也基本上居住此地。",
+                    img:"img/鲁迅故居.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "徐志摩故居",
+                    point : "120.701829,30.534019",
+                    address : "浙江省嘉兴市干河街38号 ",
+                    description : "",
+                    img:"img/徐志摩.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "徐志摩纪念馆",
+                    point : "120.175719,30.285997",
+                    address : "杭州市下城区上塘路97号大院 ",
+                    description : "",
+                    img:"img/徐志摩.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "章太炎故居",
+                    point : "120.006263,30.295531",
+                    address : "仓前塘路59号 ",
+                    description : "章太炎故居本体建筑面积811平方米，坐北朝南，共四进一弄，由轿厅、正厅、内堂、书房、避弄等组成，为晚清时期建筑。先生在此出生成长，并度过了对其一生产生重要影响的二十二个春秋。",
+                    img:"img/章太炎故居.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "杭州章太炎纪念馆",
+                    point : "120.151272,30.233606",
+                    address : "浙江省杭州市西湖区南山路2-1号",
+                    description : "馆内收藏有1000余件文物，其中《流血革命》、《狱中联句》、《十九路军死难将士公墓表》等，均系国家一级文物。",
+                    img:"img/章太炎.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "俞平伯故居",
+                    point : "120.147941,30.256498",
+                    address : "白堤孤山路32号 ",
+                    description : "",
+                    img:"img/俞平伯.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "郁达夫故居",
+                    point : "119.965226,30.05189",
+                    address : "富春路与市心路交汇处(郁达夫公园内) ",
+                    description : "现保留着部分烈士的遗物，于1996年12月郁达夫诞辰百年纪念日之际对外开放，是杭州市命名的“爱国主义教育基地”之一。",
+                    img:"img/郁达夫故居.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "茅盾故居",
+                    point : "120.50057,30.747643",
+                    address : "浙江省嘉兴市桐乡市乌镇观前街17号",
+                    description : "茅盾自1896年7月4日诞生至1910 年春离乡求学，在此生活了十三个春秋，以后数十年仍联系不绝。",
+                    img:"img/茅盾乌镇故居.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "王国维故居",
+                    point : "120.50057,30.747643",
+                    address : "浙江省嘉兴市盐官镇建安路4号 ",
+                    description : "",
+                    img:"img/王国维.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "马寅初纪念馆",
+                    point : "120.172495,30.264465",
+                    address : "杭州市下城区庆春路210号 ",
+                    description : "1936年马寅初购买并居住。1951年5月，马寅初被任命为北京大学校长，离杭赴京。",
+                    img:"img/马寅初纪念馆.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "马寅初故居",
+                    point : "120.864519,29.637019",
+                    address : "浙江省嵊州市浦口街道名人街74号",
+                    description : "1882年6月24日，马寅初于马年马月马日马时降生在这里，并度过了童幼年、青少年时期。",
+                    img:"img/.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "柔石故居",
+                    point : "121.429833,29.294083",
+                    address : "浙江省宁波市宁海县柔石路1号 ",
+                    description : "",
+                    img:"img/柔石故居.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "邵飘萍故居",
+                    point : "119.676403,29.113909",
+                    address : "浙江省金华市婺城区旌孝街362号 ",
+                    description : "",
+                    img:"img/邵飘萍.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "苏曼殊墓遗址",
+                    point : "120.147842,30.258219",
+                    address : "杭州市西湖区孤山北路3号孤山公园内",
+                    description : "",
+                    img:"img/苏曼殊.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//江苏
+				{
+                    title : "刘师培故居",
+                    point : "119.451343,32.40119",
+                    address : "江苏省扬州市广陵区东圈门14号 ",
+                    description : "",
+                    img:"img/刘师培.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "刘氏兄弟纪念馆",
+                    point : "120.270372,31.91003",
+                    address : "江苏省无锡市江阴市西横街54号 ",
+                    description : "刘氏兄弟纪念馆是江阴市人民政府为纪念中国现代文化名人刘半农、刘天华、刘北茂三兄弟而利用刘氏后裔捐赠的祖籍故居改建的。",
+                    img:"img/刘半农.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "章太炎故居",
+                    point : "120.631105,31.308754",
+                    address : "江苏省苏州市锦帆路38号",
+                    description : "始建于20世纪30年代，为章太炎当年藏书、著述、会客和生活起居之所，外观立面是中西合璧式建筑，清水砖墙，青平瓦屋面，大门柱子仿罗马式，木门窗既有苏州传统建筑风味，又有国外洋房气息。",
+                    img:"img/章太炎.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "冯雪峰故居",
+                    point : "120.016597,29.144445",
+                    address : "江苏义乌市赤岸镇神坛村 ",
+                    description : "雪峰故居是一座建于清宣统二年的四合院。二进三开间，左右厢房各两间，中间一个天井，厅堂中摆着冯雪峰的塑像，陈列着生平事迹照片及国家领导和文化名人的题词。",
+                    img:"img/冯雪峰.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "朱自清旧居",
+                    point : "119.456017,32.399355",
+                    address : "江苏省扬州市广陵区安乐巷27号 ",
+                    description : "",
+                    img:"img/朱自清.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "叶圣陶纪念馆",
+                    point : "120.877696,31.275435",
+                    address : "苏州市吴中区甪直风景区甪直古镇香花弄(保圣寺内) ",
+                    description : "叶圣陶曾在这里任教。在其逝世后，当地将原校区几处旧址重行修建，辟为叶圣陶纪念馆。",
+                    img:"img/.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,
+				//安徽
+				{
+                    title : "独秀园",
+                    point : "117.008092,30.578006",
+                    address : "安徽省安庆市大观区十里铺乡林业村 ",
+                    description : "独秀园是以陈独秀墓为核心的大型人文景观",
+                    img:"img/陈独秀.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "胡适故居",
+                    point : "118.447772,30.128265",
+                    address : "安徽省宣城市绩溪县上庄镇适之村",
+                    description : "胡适故居为清光绪三年所建{1877~1880}，是胡适先生父亲胡铁花(官名胡传)所造的两进一楼通转式结构。",
+                    img:"img/胡适.jpg",
+                    site:'https://321kaylee.github.io/life-track/'
+                } ,{
+                    title : "张恨水故居",
+                    point : "116.566091,30.649631",
+                    address : "安徽省安庆市潜山市南岳路潜山县博物馆内",
+                    description : "章回小说大家、通俗文学大师张恨水故居位于该县余井镇黄岭村，原有的四水归堂式8间瓦屋已倒塌，仅存墙基及附近一方池塘，复建的故居将展示黄土书屋原貌和当年生活场景。",
+                    img:"img/张恨水.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,
+				//重庆
+				{
+                    title : "陈独秀旧居",
+                    point : "106.254549,29.209777",
+                    address : "江津区西南鹤山坪石墙院 ",
+                    description : "这里是陈独秀最后的寓居地，也是中国保存最完好的陈独秀生前居住地。",
+                    img:"img/陈独秀.jpg",
+                    site:'http://www.whlyw.net/'
+                } ,{
+                    title : "重庆郭沫若旧居",
+                    point : "106.391678,29.602729",
+                    address : "重庆市沙坪坝区西永大道14号 ",
+                    description : "",
+                    img:"img/郭沫若.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "梁实秋旧居",
+                    point : "106.439156,29.829956",
+                    address : "梨园村58号 ",
+                    description : "",
+                    img:"img/梁实秋.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "老舍旧居",
+                    point : "106.442156,29.832832",
+                    address : "重庆市北碚区天生新村63号附32号 ",
+                    description : "著名作家老舍1943年6月至1946年2月寓此。房舍系砖木结构，面积约80平方米，桐荫扶疏，环境静谧。",
+                    img:"img/老舍.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "吴宓旧居陈列室",
+                    point : "106.438004,29.833806",
+                    address : "重庆市北碚区西南大学重庆国学院 ",
+                    description : "",
+                    img:"img/吴宓.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//四川
+				{
+                    title : "乐山郭沫若故居",
+                    point : "103.552774,29.418803 ",
+                    address : "四川省乐山市文豪路中段353号",
+                    description : "旧居的建筑和陈设，仍为郭沫若童年时代的原貌，1980年修复展出，并经四川省人民政府公布为四川省文物保护单位。",
+                    img:"img/郭沫若.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "巴金故居",
+                    point : "104.08527,30.677361",
+                    address : "成都市青羊区正通顺街98号附2号",
+                    description : "巴金在这里居住到十九岁，在此度过了他的少年和青年时代，1923年春天，巴金离开这里去南京读书。",
+                    img:"img/巴金.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//广东
+				{
+                    title : "苏曼殊故居",
+                    point : "113.50377,22.295702",
+                    address : "广东省珠海市香洲区前山街道青松路",
+                    description : "",
+                    img:"img/苏曼殊.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "留余堂（张资平故居）",
+                    point : "116.132146,24.32879",
+                    address : "广东省梅州市嘉应大学南区亮湖楼侧 ",
+                    description : "",
+                    img:"img/张资平.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "陈寅恪教授故居",
+                    point : "113.305942,23.10268",
+                    address : "广州市海珠区新港西路135号中山大学南校区内东北区309号 ",
+                    description : "",
+                    img:"img/陈寅恪.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "梁启超故居纪念馆",
+                    point : "113.078252,22.46613",
+                    address : "广东省江门市新会区会城街道梁启超故居",
+                    description : "",
+                    img:"img/梁启超.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//天津
+				{
+                    title : "梁启超故居",
+                    point : "117.206145,39.142876",
+                    address : "天津市河北区民族路44-46号 ",
+                    description : "",
+                    img:"img/梁启超.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//河北
+				{
+                    title : "丁玲纪念馆",
+                    point : "115.380021,40.356301",
+                    address : "河北省张家口市涿鹿县温泉屯村 ",
+                    description : "",
+                    img:"img/丁玲.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//湖南
+				{
+                    title : "韶山毛泽东同志纪念馆",
+                    point : "112.500642,27.909605",
+                    address : "湖南省湘潭市韶山市张旭路3号",
+                    description : "",
+                    img:"img/毛泽东.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "沈从文故居",
+                    point : "109.609351,27.952832",
+                    address : "湘西土家族苗族自治州凤凰县湖南湘西土家族苗族自治州凤凰县中营街21号 ",
+                    description : "",
+                    img:"img/沈从文.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//山东
+				{
+                    title : "傅斯年纪念馆",
+                    point : "115.989365,36.45",
+                    address : "山东省聊城市东昌府区东关街111号",
+                    description : "",
+                    img:"img/傅斯年.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "冰心纪念馆",
+                    point : "121.407903,37.553793 ",
+                    address : "烟台市芝罘区历新路7号",
+                    description : "",
+                    img:"img/冰心.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "沈从文故居",
+                    point : "120.347592,36.070494",
+                    address : "青岛市市南区福山路3号 ",
+                    description : "",
+                    img:"img/沈从文.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "梁实秋故居",
+                    point : "120.339191,36.067226",
+                    address : "青岛市鱼山路33号 ",
+                    description : "",
+                    img:"img/梁实秋.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "闻一多故居",
+                    point : "120.344429,36.073685",
+                    address : "市南区鱼山路5号(中国海洋大学校园东北角近红岛路) ",
+                    description : "",
+                    img:"img/闻一多.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "老舍故居",
+                    point : "120.338287,36.06838",
+                    address : "青岛市黄县路12号",
+                    description : "",
+                    img:"img/老舍.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//江西
+				{
+                    title : "陈寅恪墓",
+                    point : "115.994834,29.552745",
+                    address : "九江市濂溪区植青路9号江西省中国科学院庐山植物园内 ",
+                    description : "",
+                    img:"img/陈寅恪.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//湖北
+				{
+                    title : "闻一多纪念馆",
+                    point : "115.278015,30.469934",
+                    address : "黄冈市浠水县红烛路1号 ",
+                    description : "",
+                    img:"img/闻一多.jpg",
+                    site:'http://www.whlyw.net/'
+                },
+				//河南
+				{
+                    title : "冯友兰纪念馆",
+                    point : "112.833726,32.710548",
+                    address : "河南省南阳市唐河县上海大道与龙山路交叉口南150米 ",
+                    description : "",
+                    img:"img/冯友兰.jpg",
+                    site:'http://www.whlyw.net/'
+                },{
+                    title : "萧红故居",
+                    point : "126.613682,45.981995",
+                    address : "黑龙江省哈尔滨市呼兰区造纸路二道街1号 ",
+                    description : "",
+                    img:"img/萧红.jpg",
+                    site:'http://www.whlyw.net/'
+                } ];
+                
+            function map_init() {
+                var map = new BMap.Map("allmap"); // 创建Map实例
+                var point = new BMap.Point(119.301745,26.081987); //地图中心点
+                map.centerAndZoom(point, 7); // 初始化地图,设置中心点坐标和地图级别。
+                map.enableScrollWheelZoom(true); //启用滚轮放大缩小
+                //地图、卫星、混合模式切换
+                map.addControl(new BMap.MapTypeControl({
+                    mapTypes : [ BMAP_NORMAL_MAP,
+                        BMAP_SATELLITE_MAP,
+                        BMAP_HYBRID_MAP ]
+                }));
+                //向地图中添加缩放控件
+                var ctrlNav = new window.BMap.NavigationControl({
+                    anchor : BMAP_ANCHOR_TOP_LEFT,
+                    type : BMAP_NAVIGATION_CONTROL_LARGE
+                });
+                map.addControl(ctrlNav);
+                //向地图中添加缩略图控件
+                var ctrlOve = new window.BMap.OverviewMapControl({
+                    anchor : BMAP_ANCHOR_BOTTOM_RIGHT,
+                    isOpen : 1
+                });
+                map.addControl(ctrlOve);
+                //向地图中添加比例尺控件
+                var ctrlSca = new window.BMap.ScaleControl({
+                    anchor : BMAP_ANCHOR_BOTTOM_LEFT
+                });
+                map.addControl(ctrlSca);
+                //地图样式设计
+                map.setMapStyleV2({
+                    styleId: '4fcaa4b0650485ef086a9b225c9a57c1'
+                });
+                map.setCurrentCity("福州"); // 设置地图显示的城市 此项是必须设置的
+                map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+                /*自定义信息框*/
+                var point = new Array(); //存放标注点经纬信息的数组
+                var marker = new Array(); //存放标注点对象的数组
+                var info = new Array(); //存放提示信息窗口对象的数组
+                var searchInfoWindow = new Array();//存放检索信息窗口对象的数组
+                for (var i = 0; i < markerArr.length; i++) {
+                    var p0 = markerArr[i].point.split(",")[0]; //
+                    var p1 = markerArr[i].point.split(",")[1]; //按照原数组的point格式将地图点坐标的经纬度分别提出来
+                    point[i] = new window.BMap.Point(p0, p1); //循环生成新的地图点
+                    marker[i] = new window.BMap.Marker(point[i]); //按照地图点坐标生成标记
+                    map.addOverlay(marker[i]);
+                    // marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+                    //显示marker的title，marker多的话可以注释掉
+                    var label = new window.BMap.Label(markerArr[i].title, {
+                        offset : new window.BMap.Size(20, -10)   //文字偏移量
+                    });
+                    // var label1 =  new window.BMap.Label(i, {
+                    //     offset : new window.BMap.Size(4, 2)   //文字偏移量
+                    // });
+                    label.setStyle({
+                        border: "none",
+                        background: "none",
+                        color: "black",
+                        fontSize: "10px",
+                        height: "20px",
+                        lineHeight: "20px",
+                        fontFamily: "微软雅黑"//只要对label样式进行设置就可达到在标注图标上显示数字的效果
+                    });
+                    // label1.setStyle({
+                    //     color: "#fff",
+                    //     backgroundColor: "0.05",
+                    //     border: "0"
+                    // });
+                    marker[i].setLabel(label);
+                    // marker[i].setLabel(label1);
+
+                    // 创建信息窗口对象
+                    info[i] = "<p style=’font-size:12px;lineheight:1.8em;’>"
+                        + "<img style='float:right;margin:4px' id='imgDemo' src='"+ markerArr[i].img+"' width='139' height='104'/>"  //数组地址添加图片
+                        + "</br>简介：" + markerArr[i].description
+                        + "</br>地址：" + markerArr[i].address
+                        // + "</br> 电话：" + markerArr[i].tel
+                        + '</br><a href="'+ markerArr[i].site +'">'+ markerArr[i].title + '全景图片'+'</a>'  //数组地址添加超链接
+                        + '</br><a href="https://321kaylee.github.io/relationship/">'+ '人物知识图谱'+'</a>'  //数组地址添加超链接
+						+ '</br><a href="'+ markerArr[i].site +'">'+ markerArr[i].title + '人物生平轨迹'+'</a>'  //数组地址添加超链接
+                        +"</br></p>";
+                    //创建百度样式检索信息窗口对象
+                    searchInfoWindow[i] = new BMapLib.SearchInfoWindow(map,
+                        info[i], {
+                            title : markerArr[i].title+ '<a href="http://www.whlyw.net/">'+ "  --人物属性知识图谱>>" + '</a>', //标题
+                            width : 400, //宽度
+                            height : 150, //高度
+                            panel : "panel", //检索结果面板
+                            enableAutoPan : true, //自动平移
+                            searchTypes : [
+                                BMAPLIB_TAB_SEARCH, //周边检索
+                                BMAPLIB_TAB_TO_HERE, //到这里去
+                                BMAPLIB_TAB_FROM_HERE //从这里出发
+                            ]
+                        });
+                    //添加点击事件
+                    marker[i].addEventListener("mouseover", (function(k) {
+                        // js 闭包
+                        return function() {
+                            //将被点击marker置为中心
+                            // map.centerAndZoom(point[k], 18);
+                            //在marker上打开检索信息窗口
+                            searchInfoWindow[k].open(marker[k]);
+                        }
+                    })(i));
+                };
+                //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+                var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:marker});
+            }
+            // var local = new BMap.LocalSearch(map, {
+            //             renderOptions: {map: map, panel: "r-result"}
+            //         });
+            //         local.search(e);
+            
+                
+            //异步调用百度js
+            function map_load() {
+                var load = document.createElement("script");
+                load.src = "http://api.map.baidu.com/api?v=3.0&ak=ZLVsvotOlaTjCy4ri55s6vBW15olFFLh&callback=map_init";
+                document.body.appendChild(load);
+            }
+            //  //按输入的内容进行搜索
+            //  function searchMap(){
+            //          var content=document.getElementById("txtContent").value;
+            //          map_init(content);
+            // }
+            // //键盘回车事件
+            //  function EnterPress(){ 
+            //         if(event.keyCode == 13){ 
+            //             searchMap(); //调用输入框搜索事件
+            //      } 
+            // } 
+            window.onload = map_load;
+        </script>
+    <!-- </fieldset> -->
+<!-- </div> -->
+</body>
+</html>
