@@ -690,8 +690,12 @@
                     var p0 = markerArr[i].point.split(",")[0]; //
                     var p1 = markerArr[i].point.split(",")[1]; //按照原数组的point格式将地图点坐标的经纬度分别提出来
                     point[i] = new window.BMap.Point(p0, p1); //循环生成新的地图点
-                    marker[i] = new window.BMap.Marker(point[i]); //按照地图点坐标生成标记
-                    map.addOverlay(marker[i]);
+					var iconImg = new BMap.Icon('mrgj3.png', new BMap.Size(32, 32), {  
+                    anchor: new BMap.Size(10, 20) 
+                    });
+                    marker[i] = new window.BMap.Marker(point[i],{icon:iconImg}); //按照地图点坐标生成标记
+                    //marker[i] = new window.BMap.Marker(point[i]); //按照地图点坐标生成标记
+                    //map.addOverlay(marker[i]);
                     // marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
                     //显示marker的title，marker多的话可以注释掉
                     var label = new window.BMap.Label(markerArr[i].title, {
